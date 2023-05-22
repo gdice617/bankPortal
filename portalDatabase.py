@@ -5,10 +5,10 @@ from mysql.connector import Error
 class Database():
     def __init__(self,
                  host="localhost",
-                 port="MySQLServerPort",
+                 port="3306",
                  database="banks_portal",
                  user='root',
-                 password='YourPassword'):
+                 password='F@kecity69'):
 
         self.host       = host
         self.port       = port
