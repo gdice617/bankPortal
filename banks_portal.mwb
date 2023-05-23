@@ -1,4 +1,19 @@
-use banks_portal;
+create database banks_portal;
+
+CREATE TABLE `banks_portal`.`accounts` (
+  `accountId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ownerName` VARCHAR(45) NOT NULL,
+  `balance` DECIMAL(10,2) not NULL DEFAULT 0.00,
+  `account_status` VARCHAR(45) not NULL,
+  PRIMARY KEY (`accountId`));
+  
+CREATE TABLE `banks_portal`.`transactions` (
+  `transactionId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `accountID` int NOT NULL,
+  `transactionType` VARCHAR(45) not NULL,
+  `transactionAmount` decimal(10,2) not NULL DEFAULT 0.00,
+  PRIMARY KEY (`transactionId`));
+
 
 insert INTO accounts (ownerName, owner_SSN, balance, account_status) VALUES ("Maria Jozef", 123456789,10000.00, "active");
 insert INTO accounts (ownerName, owner_SSN, balance, account_status) VALUES ("Linda Jones", 987654321, 2600.00, "inactive");
@@ -8,34 +23,29 @@ insert INTO accounts (ownerName, owner_SSN, balance, account_status) VALUES ("Pa
 insert INTO transactions (accountID, transactionType, transactionAmount) values (1, "deposit", 650.98);
 insert INTO transactions (accountID, transactionType, transactionAmount) values (3, "withdraw", 899.87);
 insert INTO transactions (accountID, transactionType, transactionAmount) values (3, "deposit", 350.00);
-DROP PROCEDURE IF EXISTS `accountTransactions`//
+
 use banks_portal; 
 DELIMITER //
-CREATE PROCEDURE accountTransactions( 
-IN acctID INT
-)
+DROP PROCEDURE IF EXISTS `accountTransactions`//
+CREATE PROCEDURE accountTransactions( IN acctID INT )
 BEGIN
-	SELECT * 
-	FROM transactions 
-    WHERE accountID = acctID;
+	SELECT * FROM transactions WHERE accountID = acctID;
 END //
 DELIMITER ;
 
 
-CALL banks_portal.accountTransactions(1);
 
 DROP PROCEDURE IF EXISTS `deposit`//
 DELIMITER //
 CREATE PROCEDURE deposit( IN acctID INT, IN amount DECIMAL(10,2))
 BEGIN
-	insert INTO transactions (accountID, transactionType, transactionAmount) 
-    values (acctID, "deposit", amount);
+	insert INTO transactions (accountID, transactionType, transactionAmount) values (acctID, "deposit", amount);
 END//
 DELIMITER ;
 
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS `accountTransactions`$$
+DROP PROCEDURE IF EXISTS `withdraw`$$
 CREATE PROCEDURE withdraw( IN acctID INT, IN amount DECIMAL(10,2))
 BEGIN
 	insert INTO transactions (accountID, transactionType, transactionAmount) values (acctID, "withdraw", amount);
